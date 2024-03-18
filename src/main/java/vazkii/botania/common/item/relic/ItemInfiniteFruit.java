@@ -25,7 +25,7 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemInfiniteFruit extends ItemRelic implements IManaUsingItem {
+public class ItemInfiniteFruit extends ItemRelic {
 
 	public static IIcon dasBootIcon;
 
@@ -81,10 +81,4 @@ public class ItemInfiniteFruit extends ItemRelic implements IManaUsingItem {
 		String name = par1ItemStack.getDisplayName().toLowerCase().trim();
 		return name.equals("das boot");
 	}
-
-	@Override
-	public boolean usesMana(ItemStack stack) {
-		return true;
-	}
-
 }

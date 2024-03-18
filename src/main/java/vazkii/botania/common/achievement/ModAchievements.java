@@ -78,7 +78,8 @@ public final class ModAchievements {
 	public static Achievement pinkinator;
 
 	public static Achievement relicInfiniteFruit;
-	public static Achievement relicKingKey;
+//	public static Achievement relicKingKey;
+	public static Achievement relicExcaliber;
 	public static Achievement relicFlugelEye;
 	public static Achievement relicThorRing;
 	public static Achievement relicOdinRing;
@@ -139,7 +140,8 @@ public final class ModAchievements {
 
 		if(ConfigHandler.relicsEnabled) {
 			relicInfiniteFruit = new AchievementMod(LibAchievementNames.RELIC_INFINITE_FRUIT, -9, 8, ModItems.infiniteFruit, null);
-			relicKingKey = new AchievementMod(LibAchievementNames.RELIC_KING_KEY, -7, 11, ModItems.kingKey, null);
+//			relicKingKey = new AchievementMod(LibAchievementNames.RELIC_KING_KEY, -7, 11, ModItems.kingKey, null);
+			relicExcaliber = new AchievementMod(LibAchievementNames.RELIC_EXCALIBER, -7, 11, ModItems.excaliber, null);
 			relicFlugelEye = new AchievementMod(LibAchievementNames.RELIC_FLUGEL_EYE, -5, 8, ModItems.flugelEye, null);
 			relicThorRing = new AchievementMod(LibAchievementNames.RELIC_THOR_RING, -7, 7, ModItems.thorRing, null);
 			relicOdinRing = new AchievementMod(LibAchievementNames.RELIC_ODIN_RING, -9, 10, ModItems.odinRing, null);

@@ -13,7 +13,6 @@ package vazkii.botania.common.lexicon;
 import java.util.ArrayList;
 import java.util.List;
 
-import baubles.common.Config;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -1319,7 +1318,7 @@ public final class LexiconData {
 					ModAchievements.relicInfiniteFruit);
 			infiniteFruit.setLexiconPages(new PageText("0"));
 
-			kingKey = new RLexiconEntry(LibLexicon.ALF_KING_KEY, categoryAlfhomancy, ModAchievements.relicKingKey);
+			kingKey = new RLexiconEntry(LibLexicon.ALF_KING_KEY, categoryAlfhomancy, ModAchievements.relicExcaliber);
 			kingKey.setLexiconPages(new PageText("0"));
 
 			flugelEye = new RLexiconEntry(LibLexicon.ALF_FLUGEL_EYE, categoryAlfhomancy,

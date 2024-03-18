@@ -39,7 +39,7 @@ public class ItemDice extends ItemRelic {
 
 		relicStacks = new ItemStack[] {
 				new ItemStack(ModItems.infiniteFruit),
-				new ItemStack(ModItems.kingKey),
+				new ItemStack(ModItems.excaliber),
 				new ItemStack(ModItems.flugelEye),
 				new ItemStack(ModItems.thorRing),
 				new ItemStack(ModItems.odinRing),

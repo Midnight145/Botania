@@ -10,12 +10,15 @@
  */
 package vazkii.botania.client.core.proxy;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Calendar;
-
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
@@ -49,13 +52,13 @@ import vazkii.botania.client.core.handler.ClientTickHandler;
 import vazkii.botania.client.core.handler.CorporeaAutoCompleteHandler;
 import vazkii.botania.client.core.handler.DebugHandler;
 import vazkii.botania.client.core.handler.HUDHandler;
+import vazkii.botania.client.core.handler.KeyHandler;
 import vazkii.botania.client.core.handler.LightningHandler;
 import vazkii.botania.client.core.handler.MultiblockRenderHandler;
 import vazkii.botania.client.core.handler.PersistentVariableHelper;
 import vazkii.botania.client.core.handler.SubTileRadiusRenderHandler;
 import vazkii.botania.client.core.handler.TooltipHandler;
 import vazkii.botania.client.core.helper.ShaderHelper;
-import vazkii.botania.client.core.handler.KeyHandler;
 import vazkii.botania.client.fx.FXSparkle;
 import vazkii.botania.client.fx.FXWisp;
 import vazkii.botania.client.gui.lexicon.GuiLexicon;
@@ -82,7 +85,6 @@ import vazkii.botania.client.render.block.RenderSpecialFlower;
 import vazkii.botania.client.render.block.RenderSpreader;
 import vazkii.botania.client.render.block.RenderTeruTeruBozu;
 import vazkii.botania.client.render.block.RenderTinyPotato;
-import vazkii.botania.client.render.entity.RenderBabylonWeapon;
 import vazkii.botania.client.render.entity.RenderCorporeaSpark;
 import vazkii.botania.client.render.entity.RenderDoppleganger;
 import vazkii.botania.client.render.entity.RenderManaStorm;
@@ -124,7 +126,6 @@ import vazkii.botania.client.render.tile.RenderTileTerraPlate;
 import vazkii.botania.client.render.tile.RenderTileTeruTeruBozu;
 import vazkii.botania.client.render.tile.RenderTileTinyPotato;
 import vazkii.botania.client.render.world.SkyblockRenderEvents;
-import vazkii.botania.common.Botania;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.block.tile.TileAlfPortal;
 import vazkii.botania.common.block.tile.TileAltar;
@@ -158,7 +159,6 @@ import vazkii.botania.common.core.handler.ConfigHandler;
 import vazkii.botania.common.core.helper.MathHelper;
 import vazkii.botania.common.core.helper.Vector3;
 import vazkii.botania.common.core.proxy.CommonProxy;
-import vazkii.botania.common.entity.EntityBabylonWeapon;
 import vazkii.botania.common.entity.EntityCorporeaSpark;
 import vazkii.botania.common.entity.EntityDoppleganger;
 import vazkii.botania.common.entity.EntityEnderAirBottle;
@@ -174,15 +174,12 @@ import vazkii.botania.common.item.ModItems;
 import vazkii.botania.common.item.equipment.bauble.ItemMonocle;
 import vazkii.botania.common.lexicon.LexiconData;
 import vazkii.botania.common.lib.LibObfuscation;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.ReflectionHelper;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.Calendar;
 
 public class ClientProxy extends CommonProxy {
 
@@ -342,7 +339,6 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityPoolMinecart.class, new RenderPoolMinecart());
 		RenderingRegistry.registerEntityRenderingHandler(EntityPinkWither.class, new RenderPinkWither());
 		RenderingRegistry.registerEntityRenderingHandler(EntityManaStorm.class, new RenderManaStorm());
-		RenderingRegistry.registerEntityRenderingHandler(EntityBabylonWeapon.class, new RenderBabylonWeapon());
 
 		ShaderHelper.initShaders();
 	}

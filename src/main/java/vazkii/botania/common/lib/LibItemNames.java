@@ -214,4 +214,5 @@ public final class LibItemNames {
 		"manaweaveCloth",
 		"manaPowder"
 	};
+    public static final String EXCALIBER = "excaliber";
 }

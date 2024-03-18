@@ -8,7 +8,8 @@
  * 
  * File Created @ [Mar 29, 2015, 10:12:50 PM (GMT)]
  */
-/*package vazkii.botania.common.item.relic;
+
+package vazkii.botania.common.item.relic;
 
 import java.util.List;
 
@@ -220,4 +221,3 @@ public class ItemExcaliber extends ItemManasteelSword implements IRelic, ILensEf
 	}
 
 }
- */
