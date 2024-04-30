@@ -90,6 +90,7 @@ import vazkii.botania.common.item.interaction.thaumcraft.ItemManasteelHelmReveal
 import vazkii.botania.common.item.interaction.thaumcraft.ItemTerrasteelHelmRevealing;
 import vazkii.botania.common.item.lens.ItemLens;
 import vazkii.botania.common.item.material.ItemDye;
+import vazkii.botania.common.item.material.ItemManaPetal;
 import vazkii.botania.common.item.material.ItemManaResource;
 import vazkii.botania.common.item.material.ItemPestleAndMortar;
 import vazkii.botania.common.item.material.ItemPetal;
@@ -123,6 +124,7 @@ import vazkii.botania.common.lib.LibOreDict;
 public final class ModItems {
 
 	public static Item lexicon;
+	public static Item manaPetal;
 	public static Item petal;
 	public static Item dye;
 	public static Item pestleAndMortar;
@@ -273,6 +275,7 @@ public final class ModItems {
 	public static Item baubleBox;
 
 	public static void init() {
+		manaPetal = new ItemManaPetal();
 		lexicon = new ItemLexicon();
 		petal = new ItemPetal();
 		dye = new ItemDye();

@@ -24,7 +24,7 @@ public class ItemManaPetal extends Item16Colors implements IFlowerComponent {
 
 	@Override
 	public boolean canFit(ItemStack stack, IInventory apothecary) {
-		return true;
+		return false;
 	}
 
 	@Override
