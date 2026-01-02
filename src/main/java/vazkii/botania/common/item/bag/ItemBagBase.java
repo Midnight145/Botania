@@ -27,10 +27,9 @@ public abstract class ItemBagBase extends ItemMod {
     public ItemBagBase(String name) {
         setUnlocalizedName(name);
         setMaxStackSize(1);
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
     }
 
-    @SubscribeEvent
     public void onPickupItem(EntityItemPickupEvent event) {
         ItemStack stack = event.item.getEntityItem();
         if(stack.getItem() == Item.getItemFromBlock(getValidPickUp()) && stack.stackSize > 0) {
@@ -39,11 +38,11 @@ public abstract class ItemBagBase extends ItemMod {
                 return;
 
             for(int i = 0; i < event.entityPlayer.inventory.getSizeInventory(); i++) {
-                 if(i == event.entityPlayer.inventory.currentItem)
+                if(i == event.entityPlayer.inventory.currentItem)
                     continue; // prevent item deletion
 
                 ItemStack invStack = event.entityPlayer.inventory.getStackInSlot(i);
-                if(invStack != null && invStack.getItem() == this) {
+                if(invStack != null && invStack.getItem() == ItemBagBase.this) {
                     ItemStack[] bagInv = loadStacks(invStack);
                     ItemStack stackAt = bagInv[color];
                     boolean didChange = false;
@@ -80,12 +79,11 @@ public abstract class ItemBagBase extends ItemMod {
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int s, float xs, float ys, float zs) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int s, float subX, float subY, float subZ) {
         TileEntity tile = world.getTileEntity(x, y, z);
-        if(tile != null && tile instanceof IInventory) {
+        if(tile instanceof IInventory inv) {
             if(!world.isRemote) {
                 ForgeDirection side = ForgeDirection.getOrientation(s);
-                IInventory inv = (IInventory) tile;
                 ItemStack[] stacks = loadStacks(stack);
                 ItemStack[] newStacks = new ItemStack[stacks.length];
                 boolean putAny = false;
@@ -148,4 +146,11 @@ public abstract class ItemBagBase extends ItemMod {
     protected abstract Block getValidPickUp();
 
     protected abstract int getGuiID();
+
+    public class EventHandler{
+        @SubscribeEvent
+        public void onPickupItemWrapper(EntityItemPickupEvent event) {
+            ItemBagBase.this.onPickupItem(event);
+        }
+    }
 }

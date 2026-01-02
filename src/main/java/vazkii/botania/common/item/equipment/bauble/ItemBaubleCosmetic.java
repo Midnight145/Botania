@@ -56,32 +56,32 @@ public class ItemBaubleCosmetic extends ItemBauble implements ICosmeticBauble {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
+	public void registerIcons(IIconRegister register) {
 		icons = new IIcon[SUBTYPES];
 		for(int i = 0; i < SUBTYPES; i++)
-			icons[i] = IconHelper.forItem(par1IconRegister, this, i);
+			icons[i] = IconHelper.forItem(register, this, i);
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < SUBTYPES; i++)
 			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public IIcon getIconFromDamage(int dmg) {
-		return icons[Math.min(SUBTYPES - 1, dmg)];
+	public IIcon getIconFromDamage(int meta) {
+		return icons[Math.min(SUBTYPES - 1, meta)];
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		return super.getUnlocalizedName(par1ItemStack) + par1ItemStack.getItemDamage();
+	public String getUnlocalizedName(ItemStack stack) {
+		return super.getUnlocalizedName(stack) + stack.getItemDamage();
 	}
 
 	@Override
-	public void addHiddenTooltip(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.cosmeticBauble"), par3List);
-		super.addHiddenTooltip(par1ItemStack, par2EntityPlayer, par3List, par4);
+	public void addHiddenTooltip(ItemStack stack, EntityPlayer player, List<String> infoList, boolean adv) {
+		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.cosmeticBauble"), infoList);
+		super.addHiddenTooltip(stack, player, infoList, adv);
 	}
 
 	@Override

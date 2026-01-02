@@ -51,7 +51,7 @@ public class BlockEndStoneBrick extends BlockMod implements ILexiconable {
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < 4; i++)
 			list.add(new ItemStack(item, 1, i));
 	}
@@ -67,14 +67,14 @@ public class BlockEndStoneBrick extends BlockMod implements ILexiconable {
 	}
 
 	@Override
-	public int damageDropped(int par1) {
-		return par1;
+	public int damageDropped(int meta) {
+		return meta;
 	}
 
 	@Override
-	public Block setBlockName(String par1Str) {
-		GameRegistry.registerBlock(this, ItemCubeWithMetadataAndName.class, par1Str);
-		return super.setBlockName(par1Str);
+	public Block setBlockName(String name) {
+		GameRegistry.registerBlock(this, ItemCubeWithMetadataAndName.class, name);
+		return super.setBlockName(name);
 	}
 
 	@Override

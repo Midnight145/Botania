@@ -26,13 +26,12 @@ public class ItemElementiumAxe extends ItemManasteelAxe {
 
 	public ItemElementiumAxe() {
 		super(BotaniaAPI.elementiumToolMaterial, LibItemNames.ELEMENTIUM_AXE);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
 	// Thanks to SpitefulFox for the drop rates
 	// https://github.com/SpitefulFox/ForbiddenMagic/blob/master/src/com/spiteful/forbidden/FMEventHandler.java
 
-	@SubscribeEvent
 	public void onEntityDrops(LivingDropsEvent event) {
 		if(event.recentlyHit && event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) {
 			ItemStack weapon = ((EntityPlayer) event.source.getEntity()).getCurrentEquippedItem();
@@ -62,4 +61,10 @@ public class ItemElementiumAxe extends ItemManasteelAxe {
 		event.drops.add(entityitem);
 	}
 
+	public class EventHandler{
+		@SubscribeEvent
+		public void onEntityDropsWrapper(LivingDropsEvent event) {
+			ItemElementiumAxe.this.onEntityDrops(event);
+		}
+	}
 }

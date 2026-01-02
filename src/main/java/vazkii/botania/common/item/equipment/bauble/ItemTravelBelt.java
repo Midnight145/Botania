@@ -55,7 +55,7 @@ public class ItemTravelBelt extends ItemBauble implements IBaubleRender, IManaUs
 
 	public ItemTravelBelt() {
 		this(LibItemNames.TRAVEL_BELT, 0.035F, 0.2F, 2F);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
 	public ItemTravelBelt(String name, float speed, float jump, float fallBuffer) {
@@ -70,11 +70,9 @@ public class ItemTravelBelt extends ItemBauble implements IBaubleRender, IManaUs
 		return BaubleType.BELT;
 	}
 
-	@SubscribeEvent
 	public void updatePlayerStepStatus(LivingUpdateEvent event) {
-		if(event.entityLiving instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) event.entityLiving;
-			String s = playerStr(player);
+		if(event.entityLiving instanceof EntityPlayer player) {
+            String s = playerStr(player);
 
 			ItemStack belt = PlayerHandler.getPlayerBaubles(player).getStackInSlot(3);
 			if(playersWithStepup.contains(s)) {
@@ -117,11 +115,9 @@ public class ItemTravelBelt extends ItemBauble implements IBaubleRender, IManaUs
 		// NO-OP
 	}
 
-	@SubscribeEvent
 	public void onPlayerJump(LivingJumpEvent event) {
-		if(event.entityLiving instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) event.entityLiving;
-			ItemStack belt = PlayerHandler.getPlayerBaubles(player).getStackInSlot(3);
+		if(event.entityLiving instanceof EntityPlayer player) {
+            ItemStack belt = PlayerHandler.getPlayerBaubles(player).getStackInSlot(3);
 
 			if(belt != null && belt.getItem() instanceof ItemTravelBelt && ManaItemHandler.requestManaExact(belt, player, COST, false)) {
 				player.motionY += ((ItemTravelBelt) belt.getItem()).jump;
@@ -135,7 +131,6 @@ public class ItemTravelBelt extends ItemBauble implements IBaubleRender, IManaUs
 		return armor != null && armor.getItem() instanceof ItemTravelBelt && ManaItemHandler.requestManaExact(armor, player, COST, false);
 	}
 
-	@SubscribeEvent
 	public void playerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
 		String username = event.player.getGameProfile().getName();
 		playersWithStepup.remove(username + ":false");
@@ -173,4 +168,20 @@ public class ItemTravelBelt extends ItemBauble implements IBaubleRender, IManaUs
 		return true;
 	}
 
+	public class EventHandler{
+		@SubscribeEvent
+		public void updatePlayerStepStatusWrapper(LivingUpdateEvent event) {
+			ItemTravelBelt.this.updatePlayerStepStatus(event);
+		}
+
+		@SubscribeEvent
+		public void onPlayerJumpWrapper(LivingJumpEvent event) {
+			ItemTravelBelt.this.onPlayerJump(event);
+		}
+
+		@SubscribeEvent
+		public void playerLoggedOutWrapper(PlayerEvent.PlayerLoggedOutEvent event) {
+			ItemTravelBelt.this.playerLoggedOut(event);
+		}
+	}
 }

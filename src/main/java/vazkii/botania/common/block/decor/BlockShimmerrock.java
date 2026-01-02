@@ -36,10 +36,9 @@ public class BlockShimmerrock extends BlockMod implements ILexiconable {
 		setResistance(10.0F);
 		setStepSound(soundTypeStone);
 		setBlockName(LibBlockNames.SHIMMERROCK);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
-	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void loadTextures(TextureStitchEvent.Pre event) {
 		if(event.map.getTextureType() == 0) {
@@ -51,7 +50,7 @@ public class BlockShimmerrock extends BlockMod implements ILexiconable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
+	public void registerBlockIcons(IIconRegister register) {
 		// NO-OP
 	}
 
@@ -60,4 +59,11 @@ public class BlockShimmerrock extends BlockMod implements ILexiconable {
 		return LexiconData.rainbowRod;
 	}
 
+	public class EventHandler {
+		@SubscribeEvent
+		@SideOnly(Side.CLIENT)
+		public void loadTexturesWrapper(TextureStitchEvent.Pre event) {
+			BlockShimmerrock.this.loadTextures(event);
+		}
+	}
 }

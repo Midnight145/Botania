@@ -36,19 +36,19 @@ public class ItemBlackLotus extends ItemMod implements IManaDissolvable {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < 2; i++)
 			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack par1ItemStack, int pass) {
-		return par1ItemStack.getItemDamage() > 0;
+	public boolean hasEffect(ItemStack stack, int pass) {
+		return stack.getItemDamage() > 0;
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		return super.getUnlocalizedName(par1ItemStack) + par1ItemStack.getItemDamage();
+	public String getUnlocalizedName(ItemStack stack) {
+		return super.getUnlocalizedName(stack) + stack.getItemDamage();
 	}
 
 	@Override
@@ -82,8 +82,8 @@ public class ItemBlackLotus extends ItemMod implements IManaDissolvable {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean adv) {
-		list.add(StatCollector.translateToLocal("botaniamisc.lotusDesc"));
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> infoList, boolean advanced) {
+		infoList.add(StatCollector.translateToLocal("botaniamisc.lotusDesc"));
 	}
 
 }

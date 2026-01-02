@@ -53,7 +53,7 @@ public class BlockLightLauncher extends BlockMod implements ILexiconable {
 	}
 
 	@Override
-	public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_) {
+	public boolean getBlocksMovement(IBlockAccess worldIn, int x, int y, int z) {
 		return false;
 	}
 
@@ -74,17 +74,15 @@ public class BlockLightLauncher extends BlockMod implements ILexiconable {
 		List<TileLightRelay> relays = new ArrayList<>();
 		for(ForgeDirection dir : LibMisc.CARDINAL_DIRECTIONS) {
 			TileEntity tile = world.getTileEntity(x + dir.offsetX, y, z + dir.offsetZ);
-			if(tile instanceof TileLightRelay) {
-				TileLightRelay relay = (TileLightRelay) tile;
-				if(relay.getBinding() != null)
+			if(tile instanceof TileLightRelay relay) {
+                if(relay.getBinding() != null)
 					relays.add(relay);
 			}
 		}
 
 		if(!relays.isEmpty()) {
 			AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
-			List<Entity> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb);
-			entities.addAll(world.getEntitiesWithinAABB(EntityItem.class, aabb));
+			List<Entity> entities = world.selectEntitiesWithinAABB(Entity.class, aabb, e -> e instanceof EntityLivingBase || e instanceof EntityItem);
 
 			if(!entities.isEmpty()) {
 				for(Entity entity : entities) {

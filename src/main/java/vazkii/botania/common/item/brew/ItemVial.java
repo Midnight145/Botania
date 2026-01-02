@@ -38,25 +38,25 @@ public class ItemVial extends ItemMod implements IBrewContainer {
 	}
 
 	@Override
-	public void registerIcons(IIconRegister par1IconRegister) {
-		vialIcon = IconHelper.forName(par1IconRegister, LibItemNames.VIAL + "0");
-		flaskIcon = IconHelper.forName(par1IconRegister, LibItemNames.FLASK + "0");
+	public void registerIcons(IIconRegister register) {
+		vialIcon = IconHelper.forName(register, LibItemNames.VIAL + "0");
+		flaskIcon = IconHelper.forName(register, LibItemNames.FLASK + "0");
 	}
 
 	@Override
-	public IIcon getIconFromDamage(int i) {
-		return i == 0 ? vialIcon : flaskIcon;
+	public IIcon getIconFromDamage(int meta) {
+		return meta == 0 ? vialIcon : flaskIcon;
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < 2; i++)
 			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		return super.getUnlocalizedName(par1ItemStack) + par1ItemStack.getItemDamage();
+	public String getUnlocalizedName(ItemStack stack) {
+		return super.getUnlocalizedName(stack) + stack.getItemDamage();
 	}
 
 	@Override

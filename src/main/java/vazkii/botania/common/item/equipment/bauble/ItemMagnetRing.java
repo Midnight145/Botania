@@ -54,7 +54,7 @@ public class ItemMagnetRing extends ItemBauble {
 
 	public ItemMagnetRing() {
 		this(LibItemNames.MAGNET_RING, 6);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
 	public ItemMagnetRing(String name, int range) {
@@ -64,9 +64,9 @@ public class ItemMagnetRing extends ItemBauble {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
-		itemIcon = IconHelper.forItem(par1IconRegister, this, 0);
-		iconOff = IconHelper.forItem(par1IconRegister, this, 1);
+	public void registerIcons(IIconRegister register) {
+		itemIcon = IconHelper.forItem(register, this, 0);
+		iconOff = IconHelper.forItem(register, this, 1);
 	}
 
 	@Override
@@ -75,7 +75,6 @@ public class ItemMagnetRing extends ItemBauble {
 		return getCooldown(stack) <= 0 ? itemIcon : iconOff;
 	}
 
-	@SubscribeEvent
 	public void onTossItem(ItemTossEvent event) {
 		InventoryBaubles inv = PlayerHandler.getPlayerBaubles(event.player);
 		for(int i = 0; i < inv.getSizeInventory(); i++) {
@@ -166,5 +165,10 @@ public class ItemMagnetRing extends ItemBauble {
 		return BaubleType.RING;
 	}
 
-
+	public class EventHandler{
+		@SubscribeEvent
+		public void onTossItemWrapper(ItemTossEvent event) {
+			ItemMagnetRing.this.onTossItem(event);
+		}
+	}
 }

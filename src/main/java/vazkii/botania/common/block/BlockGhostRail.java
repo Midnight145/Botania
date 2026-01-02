@@ -38,23 +38,22 @@ public class BlockGhostRail extends BlockRailBase implements ILexiconable {
 	public BlockGhostRail() {
 		super(true);
 		setCreativeTab(BotaniaCreativeTab.INSTANCE);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 		setBlockName(LibBlockNames.GHOST_RAIL);
 	}
 
 	@Override
-	public Block setBlockName(String par1Str) {
-		GameRegistry.registerBlock(this, ItemBlockMod.class, par1Str);
-		return super.setBlockName(par1Str);
+	public Block setBlockName(String name) {
+		GameRegistry.registerBlock(this, ItemBlockMod.class, name);
+		return super.setBlockName(name);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		blockIcon = IconHelper.forBlock(par1IconRegister, this);
+	public void registerBlockIcons(IIconRegister register) {
+		blockIcon = IconHelper.forBlock(register, this);
 	}
 
-	@SubscribeEvent
 	public void onMinecartUpdate(MinecartUpdateEvent event) {
 		int x = MathHelper.floor_double(event.entity.posX);
 		int y = MathHelper.floor_double(event.entity.posY);
@@ -88,6 +87,13 @@ public class BlockGhostRail extends BlockRailBase implements ILexiconable {
 	@Override
 	public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {
 		return LexiconData.ghostRail;
+	}
+
+	public class EventHandler {
+		@SubscribeEvent
+		public void onMinecartUpdateWrapper(MinecartUpdateEvent event) {
+			BlockGhostRail.this.onMinecartUpdate(event);
+		}
 	}
 
 }

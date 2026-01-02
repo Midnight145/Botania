@@ -60,7 +60,7 @@ public class ItemBloodPendant extends ItemBauble implements IBrewContainer, IBre
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 		super.getSubItems(item, tab, list);
 		for(String s : BotaniaAPI.brewMap.keySet()) {
 			ItemStack brewStack = getItemForBrew(BotaniaAPI.brewMap.get(s), new ItemStack(this));
@@ -71,10 +71,10 @@ public class ItemBloodPendant extends ItemBauble implements IBrewContainer, IBre
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
+	public void registerIcons(IIconRegister register) {
 		icons = new IIcon[4];
 		for(int i = 0; i < 4; i++)
-			icons[i] = IconHelper.forItem(par1IconRegister, this, i);
+			icons[i] = IconHelper.forItem(register, this, i);
 	}
 
 	@Override
@@ -88,8 +88,8 @@ public class ItemBloodPendant extends ItemBauble implements IBrewContainer, IBre
 	}
 
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int pass) {
-		if(pass == 0)
+	public int getColorFromItemStack(ItemStack stack, int renderPass) {
+		if(renderPass == 0)
 			return 0xFFFFFF;
 
 		Brew brew = getBrew(stack);
@@ -107,20 +107,20 @@ public class ItemBloodPendant extends ItemBauble implements IBrewContainer, IBre
 	}
 
 	@Override
-	public void addHiddenTooltip(ItemStack stack, EntityPlayer player, List list, boolean adv) {
-		super.addHiddenTooltip(stack, player, list, adv);
+	public void addHiddenTooltip(ItemStack stack, EntityPlayer player, List<String> infoList, boolean adv) {
+		super.addHiddenTooltip(stack, player, infoList, adv);
 
 		Brew brew = getBrew(stack);
 		if(brew == BotaniaAPI.fallbackBrew) {
-			addStringToTooltip(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("botaniamisc.notInfused"), list);
+			addStringToTooltip(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("botaniamisc.notInfused"), infoList);
 			return;
 		}
 
-		addStringToTooltip(EnumChatFormatting.LIGHT_PURPLE + String.format(StatCollector.translateToLocal("botaniamisc.brewOf"), StatCollector.translateToLocal(brew.getUnlocalizedName(stack))), list);
+		addStringToTooltip(EnumChatFormatting.LIGHT_PURPLE + String.format(StatCollector.translateToLocal("botaniamisc.brewOf"), StatCollector.translateToLocal(brew.getUnlocalizedName(stack))), infoList);
 		for(PotionEffect effect : brew.getPotionEffects(stack)) {
 			Potion potion = Potion.potionTypes[effect.getPotionID()];
 			EnumChatFormatting format = potion.isBadEffect() ? EnumChatFormatting.RED : EnumChatFormatting.GRAY;
-			addStringToTooltip(" " + format + StatCollector.translateToLocal(effect.getEffectName()) + (effect.getAmplifier() == 0 ? "" : " " + StatCollector.translateToLocal("botania.roman" + (effect.getAmplifier() + 1))), list);
+			addStringToTooltip(" " + format + StatCollector.translateToLocal(effect.getEffectName()) + (effect.getAmplifier() == 0 ? "" : " " + StatCollector.translateToLocal("botania.roman" + (effect.getAmplifier() + 1))), infoList);
 		}
 	}
 
@@ -132,9 +132,8 @@ public class ItemBloodPendant extends ItemBauble implements IBrewContainer, IBre
 	@Override
 	public void onWornTick(ItemStack stack, EntityLivingBase player) {
 		Brew brew = getBrew(stack);
-		if(brew != BotaniaAPI.fallbackBrew && player instanceof EntityPlayer && !player.worldObj.isRemote) {
-			EntityPlayer eplayer = (EntityPlayer) player;
-			PotionEffect effect = brew.getPotionEffects(stack).get(0);
+		if(brew != BotaniaAPI.fallbackBrew && player instanceof EntityPlayer eplayer && !player.worldObj.isRemote) {
+            PotionEffect effect = brew.getPotionEffects(stack).get(0);
 			float cost = (float) brew.getManaCost(stack) / effect.getDuration() / (1 + effect.getAmplifier()) * 2.5F;
 			boolean doRand = cost < 1;
 			if(ManaItemHandler.requestManaExact(stack, eplayer, (int) Math.ceil(cost), false)) {

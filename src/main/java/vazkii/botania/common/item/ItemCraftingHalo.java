@@ -81,8 +81,9 @@ public class ItemCraftingHalo extends ItemMod implements ICraftAchievement {
 
 	public ItemCraftingHalo() {
 		this(LibItemNames.CRAFTING_HALO);
-		MinecraftForge.EVENT_BUS.register(this);
-		FMLCommonHandler.instance().bus().register(this);
+		EventHandler handler = new EventHandler();
+		MinecraftForge.EVENT_BUS.register(handler);
+		FMLCommonHandler.instance().bus().register(handler);
 	}
 
 	public ItemCraftingHalo(String name) {
@@ -113,12 +114,12 @@ public class ItemCraftingHalo extends ItemMod implements ICraftAchievement {
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int pos, boolean equipped) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int invSlot, boolean isHeld) {
 		boolean eqLastTick = wasEquipped(stack);
-		if(eqLastTick != equipped)
-			setEquipped(stack, equipped);
+		if(eqLastTick != isHeld)
+			setEquipped(stack, isHeld);
 
-		if(!equipped && entity instanceof EntityLivingBase) {
+		if(!isHeld && entity instanceof EntityLivingBase) {
 			int angles = 360;
 			int segAngles = angles / SEGMENTS;
 			float shift = segAngles / 2;
@@ -300,7 +301,6 @@ public class ItemCraftingHalo extends ItemMod implements ICraftAchievement {
 			ItemNBTHelper.setCompound(stack, TAG_STORED_RECIPE_PREFIX + pos, getLastCraftingCompound(stack, false));
 	}
 
-	@SubscribeEvent
 	public void onItemCrafted(ItemCraftedEvent event) {
 		if(!(event.craftMatrix instanceof InventoryCraftingHalo))
 			return;
@@ -392,7 +392,6 @@ public class ItemCraftingHalo extends ItemMod implements ICraftAchievement {
 	}
 
 	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
 	public void onRenderWorldLast(RenderWorldLastEvent event) {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		ItemStack stack = player.getCurrentEquippedItem();
@@ -603,6 +602,19 @@ public class ItemCraftingHalo extends ItemMod implements ICraftAchievement {
 	@Override
 	public Achievement getAchievementOnCraft(ItemStack stack, EntityPlayer player, IInventory matrix) {
 		return ModAchievements.craftingHaloCraft;
+	}
+
+	public class EventHandler{
+		@SubscribeEvent
+		public void onItemCraftedWrapper(ItemCraftedEvent event) {
+			ItemCraftingHalo.this.onItemCrafted(event);
+		}
+
+		@SideOnly(Side.CLIENT)
+		@SubscribeEvent
+		public void onRenderWorldLastWrapper(RenderWorldLastEvent event) {
+			ItemCraftingHalo.this.onRenderWorldLast(event);
+		}
 	}
 
 }

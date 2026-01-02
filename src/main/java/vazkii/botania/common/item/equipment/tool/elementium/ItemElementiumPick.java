@@ -16,10 +16,10 @@ public class ItemElementiumPick extends ItemManasteelPick {
 
 	public ItemElementiumPick() {
 		super(BotaniaAPI.elementiumToolMaterial, LibItemNames.ELEMENTIUM_PICK);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
-	@SubscribeEvent
+
 	public void onHarvestDrops(HarvestDropsEvent event) {
 		if(event.harvester != null) {
 			ItemStack stack = event.harvester.getCurrentEquippedItem();
@@ -46,7 +46,7 @@ public class ItemElementiumPick extends ItemManasteelPick {
 		}
 		return false;
 	}
-	
+
 	public static boolean isSemiDisposable(Block block) {
 		for(int id : OreDictionary.getOreIDs(new ItemStack(block))) {
 			String name = OreDictionary.getOreName(id);
@@ -54,5 +54,12 @@ public class ItemElementiumPick extends ItemManasteelPick {
 				return true;
 		}
 		return false;
+	}
+
+	public class EventHandler{
+		@SubscribeEvent
+		public void onHarvestDropsWrapper(HarvestDropsEvent event) {
+			ItemElementiumPick.this.onHarvestDrops(event);
+		}
 	}
 }

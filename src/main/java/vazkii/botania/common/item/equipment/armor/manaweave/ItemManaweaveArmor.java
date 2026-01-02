@@ -49,9 +49,9 @@ public class ItemManaweaveArmor extends ItemManasteelArmor implements ICraftAchi
 	}
 	
 	@Override
-	public void registerIcons(IIconRegister par1IconRegister) {
-		super.registerIcons(par1IconRegister);
-		iconChristmas = IconHelper.forItem(par1IconRegister, this, "Holiday");
+	public void registerIcons(IIconRegister register) {
+		super.registerIcons(register);
+		iconChristmas = IconHelper.forItem(register, this, "Holiday");
 	}
 	
 	@Override
@@ -60,22 +60,22 @@ public class ItemManaweaveArmor extends ItemManasteelArmor implements ICraftAchi
 	}
 
 	@Override
-	public IIcon getIconFromDamage(int dmg) {
-		return ClientProxy.jingleTheBells ? iconChristmas : super.getIconFromDamage(dmg);
+	public IIcon getIconFromDamage(int meta) {
+		return ClientProxy.jingleTheBells ? iconChristmas : super.getIconFromDamage(meta);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public String getUnlocalizedName(ItemStack p_77667_1_) {
-		String name = super.getUnlocalizedName(p_77667_1_);
+	public String getUnlocalizedName(ItemStack stack) {
+		String name = super.getUnlocalizedName(stack);
 		if(ClientProxy.jingleTheBells)
 			name = name.replaceAll("manaweave", "santaweave");
 		return name;
 	}
 	
 	@Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return par2ItemStack.getItem() == ModItems.manaResource && par2ItemStack.getItemDamage() == 22 ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+	public boolean getIsRepairable(ItemStack stack, ItemStack repairMaterial) {
+		return repairMaterial.getItem() == ModItems.manaResource && repairMaterial.getItemDamage() == 22 ? true : super.getIsRepairable(stack, repairMaterial);
 	}
 
 	static ItemStack[] armorset;
@@ -115,13 +115,13 @@ public class ItemManaweaveArmor extends ItemManasteelArmor implements ICraftAchi
 	}
 	
 	@Override
-	public void addInformationAfterShift(ItemStack stack, EntityPlayer player, List list, boolean adv) {
+	public void addInformationAfterShift(ItemStack stack, EntityPlayer player, List<String> infoList, boolean adv) {
 		if(ClientProxy.jingleTheBells) {
-			addStringToTooltip(StatCollector.translateToLocal("botaniamisc.santaweaveInfo"), list);
-			addStringToTooltip("", list);
+			addStringToTooltip(StatCollector.translateToLocal("botaniamisc.santaweaveInfo"), infoList);
+			addStringToTooltip("", infoList);
 		}
 		
-		super.addInformationAfterShift(stack, player, list, adv);
+		super.addInformationAfterShift(stack, player, infoList, adv);
 	}
 	
 	@Override

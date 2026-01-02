@@ -63,9 +63,9 @@ public class BlockForestDrum extends BlockMod implements IManaTrigger, ILexicona
 	}
 
 	@Override
-	public Block setBlockName(String par1Str) {
-		GameRegistry.registerBlock(this, ItemBlockWithMetadataAndName.class, par1Str);
-		return super.setBlockName(par1Str);
+	public Block setBlockName(String name) {
+		GameRegistry.registerBlock(this, ItemBlockWithMetadataAndName.class, name);
+		return super.setBlockName(name);
 	}
 
 	@Override
@@ -84,17 +84,17 @@ public class BlockForestDrum extends BlockMod implements IManaTrigger, ILexicona
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		iconBases = IconHelper.forBlock(par1IconRegister, this, 0);
-		iconFaces = IconHelper.forBlock(par1IconRegister, this, 1);
-		iconBasesA = IconHelper.forBlock(par1IconRegister, this, 2);
-		iconFacesA = IconHelper.forBlock(par1IconRegister, this, 3);
-		iconBasesB = IconHelper.forBlock(par1IconRegister, this, 4);
-		iconFacesB = IconHelper.forBlock(par1IconRegister, this, 5);
+	public void registerBlockIcons(IIconRegister register) {
+		iconBases = IconHelper.forBlock(register, this, 0);
+		iconFaces = IconHelper.forBlock(register, this, 1);
+		iconBasesA = IconHelper.forBlock(register, this, 2);
+		iconFacesA = IconHelper.forBlock(register, this, 3);
+		iconBasesB = IconHelper.forBlock(register, this, 4);
+		iconFacesB = IconHelper.forBlock(register, this, 5);
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < 3; i++)
 			list.add(new ItemStack(item, 1, i));
 	}

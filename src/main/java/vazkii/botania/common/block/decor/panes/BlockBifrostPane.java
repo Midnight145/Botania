@@ -24,10 +24,9 @@ public class BlockBifrostPane extends BlockModPane {
 
 	public BlockBifrostPane() {
 		super(ModBlocks.bifrostPerm);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
-	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void loadTextures(TextureStitchEvent.Pre event) {
 		if(event.map.getTextureType() == 0) {
@@ -41,6 +40,14 @@ public class BlockBifrostPane extends BlockModPane {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister reg) {
 		// NO-OP
+	}
+
+	public class EventHandler {
+		@SubscribeEvent
+		@SideOnly(Side.CLIENT)
+		public void loadTexturesWrapper(TextureStitchEvent.Pre event) {
+			BlockBifrostPane.this.loadTextures(event);
+		}
 	}
 
 }

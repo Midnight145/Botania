@@ -41,13 +41,13 @@ public class BlockSpawnerClaw extends BlockModContainer<TileSpawnerClaw> impleme
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 		list.add(new ItemStack(item));
 		list.add(new ItemStack(Blocks.mob_spawner));
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
+	public void registerBlockIcons(IIconRegister register) {
 		//NO-OP
 	}
 

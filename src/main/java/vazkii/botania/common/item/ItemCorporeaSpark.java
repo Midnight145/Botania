@@ -36,13 +36,13 @@ public class ItemCorporeaSpark extends ItemMod {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < 2; i++)
 			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xv, float yv, float zv) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float subX, float subY, float subZ) {
 		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile instanceof IInventory && !CorporeaHelper.doesBlockHaveSpark(world, x, y, z)) {
 			stack.stackSize--;
@@ -60,17 +60,17 @@ public class ItemCorporeaSpark extends ItemMod {
 	}
 
 	@Override
-	public void registerIcons(IIconRegister par1IconRegister) {
-		invIcon = IconHelper.forItem(par1IconRegister, this, 0);
-		worldIcon = IconHelper.forItem(par1IconRegister, this, 1);
-		invIconMaster = IconHelper.forItem(par1IconRegister, this, 2);
-		worldIconMaster = IconHelper.forItem(par1IconRegister, this, 3);
-		iconColorStar = IconHelper.forItem(par1IconRegister, this, "Star");
+	public void registerIcons(IIconRegister register) {
+		invIcon = IconHelper.forItem(register, this, 0);
+		worldIcon = IconHelper.forItem(register, this, 1);
+		invIconMaster = IconHelper.forItem(register, this, 2);
+		worldIconMaster = IconHelper.forItem(register, this, 3);
+		iconColorStar = IconHelper.forItem(register, this, "Star");
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		return super.getUnlocalizedName(par1ItemStack) + par1ItemStack.getItemDamage();
+	public String getUnlocalizedName(ItemStack stack) {
+		return super.getUnlocalizedName(stack) + stack.getItemDamage();
 	}
 
 	@Override

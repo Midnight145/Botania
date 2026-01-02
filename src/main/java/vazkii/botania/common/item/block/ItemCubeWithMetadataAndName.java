@@ -10,13 +10,13 @@ import java.util.List;
 
 public class ItemCubeWithMetadataAndName extends ItemBlockWithMetadataAndName  {
 
-    public ItemCubeWithMetadataAndName(Block par2Block) {
-        super(par2Block);
+    public ItemCubeWithMetadataAndName(Block block) {
+        super(block);
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> infoList, boolean advanced) {
         if (ConfigHandler.noMobSpawnOnBlocks)
-            list.add(StatCollector.translateToLocal("nomobspawnsonthisblock.tip"));
+            infoList.add(StatCollector.translateToLocal("nomobspawnsonthisblock.tip"));
     }
 }

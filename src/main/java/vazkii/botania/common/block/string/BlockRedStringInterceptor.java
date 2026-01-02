@@ -26,10 +26,9 @@ public class BlockRedStringInterceptor extends BlockRedString {
 
 	public BlockRedStringInterceptor() {
 		super(LibBlockNames.RED_STRING_INTERCEPTOR);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
-	@SubscribeEvent
 	public void onInteract(PlayerInteractEvent event) {
 		if(event.action == Action.RIGHT_CLICK_BLOCK)
 			TileRedStringInterceptor.onInteract(event.entityPlayer, event.world, event.x, event.y, event.z);
@@ -51,7 +50,7 @@ public class BlockRedStringInterceptor extends BlockRedString {
 	}
 
 	@Override
-	public int tickRate(World p_149738_1_) {
+	public int tickRate(World world) {
 		return 2;
 	}
 
@@ -60,4 +59,11 @@ public class BlockRedStringInterceptor extends BlockRedString {
 		return new TileRedStringInterceptor();
 	}
 
+	public class EventHandler {
+
+		@SubscribeEvent
+		public void onInteractWrapper(PlayerInteractEvent event) {
+			BlockRedStringInterceptor.this.onInteract(event);
+		}
+	}
 }

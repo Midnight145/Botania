@@ -25,13 +25,13 @@ import vazkii.botania.common.core.helper.Vector3;
 
 public class EntityThrownItem extends EntityItem {
 
-	public EntityThrownItem(World par1World) {
-		super(par1World);
+	public EntityThrownItem(World world) {
+		super(world);
 	}
 
-	public EntityThrownItem(World p_i1710_1_, double p_i1710_2_,
-			double p_i1710_4_, double p_i1710_6_, EntityItem item) {
-		super(p_i1710_1_, p_i1710_2_, p_i1710_4_, p_i1710_6_, item.getEntityItem());
+	public EntityThrownItem(World worldIn, double x,
+			double y, double z, EntityItem item) {
+		super(worldIn, x, y, z, item.getEntityItem());
 
 		delayBeforeCanPickup = item.delayBeforeCanPickup;
 		motionX = item.motionX;

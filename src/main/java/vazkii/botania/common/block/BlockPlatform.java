@@ -53,45 +53,45 @@ public class BlockPlatform extends BlockCamo implements ILexiconable, IWandable 
 	}
 
 	@Override
-	public int damageDropped(int par1) {
-		return par1;
+	public int damageDropped(int meta) {
+		return meta;
 	}
 
 	@Override
-	public Block setBlockName(String par1Str) {
-		GameRegistry.registerBlock(this, ItemCubeWithMetadataAndName.class, par1Str);
-		return super.setBlockName(par1Str);
+	public Block setBlockName(String name) {
+		GameRegistry.registerBlock(this, ItemCubeWithMetadataAndName.class, name);
+		return super.setBlockName(name);
 	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < SUBTYPES; i++)
-			par3List.add(new ItemStack(par1, 1, i));
+			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
+	public void registerBlockIcons(IIconRegister register) {
 		icons = new IIcon[SUBTYPES];
 		for(int i = 0; i < SUBTYPES; i++)
-			icons[i] = IconHelper.forBlock(par1IconRegister, this, i);
+			icons[i] = IconHelper.forBlock(register, this, i);
 	}
 
 	@Override
-	public IIcon getIcon(int par1, int par2) {
-		return icons[Math.min(SUBTYPES - 1, par2)];
+	public IIcon getIcon(int side, int meta) {
+		return icons[Math.min(SUBTYPES - 1, meta)];
 	}
 
 	@Override
-	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
-		int meta = par1World.getBlockMetadata(par2, par3, par4);
-		if(meta == 2 || meta == 0 && par7Entity != null && par7Entity.posY > par3 + (par7Entity instanceof EntityPlayer ? 2 : 0) && (!(par7Entity instanceof EntityPlayer) || !par7Entity.isSneaking()))
-			super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider) {
+		int meta = world.getBlockMetadata(x, y, z);
+		if(meta == 2 || meta == 0 && collider != null && collider.posY > y + (collider instanceof EntityPlayer ? 2 : 0) && (!(collider instanceof EntityPlayer) || !collider.isSneaking()))
+			super.addCollisionBoxesToList(world, x, y, z, mask, list, collider);
 	}
 
 	@Override
-	public float getBlockHardness(World par1World, int par2, int par3, int par4) {
-		int meta = par1World.getBlockMetadata(par2, par3, par4);
-		return meta == 2 ? -1F : super.getBlockHardness(par1World, par2, par3, par4);
+	public float getBlockHardness(World world, int x, int y, int z) {
+		int meta = world.getBlockMetadata(x, y, z);
+		return meta == 2 ? -1F : super.getBlockHardness(world, x, y, z);
 	}
 
 	@Override

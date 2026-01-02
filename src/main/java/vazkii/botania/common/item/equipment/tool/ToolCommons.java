@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnchantmentDurability;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,19 +33,36 @@ import vazkii.botania.common.item.ModItems;
 import vazkii.botania.common.item.equipment.tool.elementium.ItemElementiumPick;
 import vazkii.botania.common.item.equipment.tool.terrasteel.ItemTerraPick;
 
+import java.util.Random;
+
 public final class ToolCommons {
 
 	public static Material[] materialsPick = new Material[]{ Material.rock, Material.iron, Material.ice, Material.glass, Material.piston, Material.anvil };
 	public static Material[] materialsShovel = new Material[]{ Material.grass, Material.ground, Material.sand, Material.snow, Material.craftedSnow, Material.clay };
 	public static Material[] materialsAxe = new Material[]{ Material.coral, Material.leaves, Material.plants, Material.wood, Material.gourd };
 
-	public static void damageItem(ItemStack stack, int dmg, EntityLivingBase entity, int manaPerDamage) {
-		int manaToRequest = dmg * manaPerDamage;
-		boolean manaRequested = entity instanceof EntityPlayer ? ManaItemHandler.requestManaExactForTool(stack, (EntityPlayer) entity, manaToRequest, true) : false;
+    public static void damageItem(ItemStack stack, int dmg, EntityLivingBase entity, int manaPerDamage) {
+        if(entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode) return;
+        int damageTaken = 0;
+        Random random = entity.worldObj.rand;
+        int unbreaking = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, stack);
 
-		if(!manaRequested)
-			stack.damageItem(dmg, entity);
-	}
+        for (int i = 0; i < dmg; i++) {
+            if (unbreaking <= 0 || !EnchantmentDurability.negateDamage(stack, unbreaking, random)) {
+                boolean manaRequested = entity instanceof EntityPlayer
+                        ? ManaItemHandler.requestManaExactForTool(stack, (EntityPlayer) entity, manaPerDamage, true)
+                        : false;
+                if (!manaRequested) {
+                    damageTaken++;
+                }
+            }
+        }
+
+        if (damageTaken > 0) {
+            stack.damageItem(damageTaken, entity);
+        }
+
+    }
 
 	public static void removeBlocksInIteration(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, int xs, int ys, int zs, int xe, int ye, int ze, Block block, Material[] materialsListing, boolean silk, int fortune, boolean dispose) {
 		float blockHardness = block == null ? 1F : block.getBlockHardness(world, x, y, z);
@@ -106,11 +124,10 @@ public final class ToolCommons {
 			return 0;
 
 		Item item = stack.getItem();
-		if(!(item instanceof ItemTool))
+		if(!(item instanceof ItemTool tool))
 			return 0;
 
-		ItemTool tool = (ItemTool) item;
-		ToolMaterial material = tool.func_150913_i();
+        ToolMaterial material = tool.func_150913_i();
 		int materialLevel = 0;
 		if(material == BotaniaAPI.manasteelToolMaterial)
 			materialLevel = 10;
@@ -130,7 +147,7 @@ public final class ToolCommons {
 	/**
 	 * @author mDiyo
 	 */
-	public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean par3, double range) {
+	public static MovingObjectPosition raytraceFromEntity(World world, Entity player, boolean includeLiquids, double range) {
 		float f = 1.0F;
 		float f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * f;
 		float f2 = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * f;
@@ -148,7 +165,7 @@ public final class ToolCommons {
 		float f8 = f3 * f5;
 		double d3 = range;
 		Vec3 vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
-		return world.rayTraceBlocks(vec3, vec31, par3);
+		return world.rayTraceBlocks(vec3, vec31, includeLiquids);
 	}
 
 }

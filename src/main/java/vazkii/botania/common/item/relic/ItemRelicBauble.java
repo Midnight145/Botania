@@ -32,26 +32,25 @@ public abstract class ItemRelicBauble extends ItemBauble implements IRelic {
 	}
 
 	@Override
-	public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
-		if(p_77663_3_ instanceof EntityPlayer)
-			ItemRelic.updateRelic(p_77663_1_, (EntityPlayer) p_77663_3_);
+	public void onUpdate(ItemStack stack, World world, Entity entity, int invSlot, boolean isHeld) {
+		if(entity instanceof EntityPlayer)
+			ItemRelic.updateRelic(stack, (EntityPlayer) entity);
 	}
 
 	@Override
 	public void onWornTick(ItemStack stack, EntityLivingBase player) {
 		super.onWornTick(stack, player);
-		if(player instanceof EntityPlayer) {
-			EntityPlayer ePlayer = (EntityPlayer) player;
-			ItemRelic.updateRelic(stack, ePlayer);
+		if(player instanceof EntityPlayer ePlayer) {
+            ItemRelic.updateRelic(stack, ePlayer);
 			if(ItemRelic.isRightPlayer(ePlayer, stack))
 				onValidPlayerWornTick(stack, ePlayer);
 		}
 	}
 
 	@Override
-	public void addHiddenTooltip(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		super.addHiddenTooltip(par1ItemStack, par2EntityPlayer, par3List, par4);
-		ItemRelic.addBindInfo(par3List, par1ItemStack, par2EntityPlayer);
+	public void addHiddenTooltip(ItemStack stack, EntityPlayer player, List<String> infoList, boolean adv) {
+		super.addHiddenTooltip(stack, player, infoList, adv);
+		ItemRelic.addBindInfo(infoList, stack, player);
 	}
 
 	public void onValidPlayerWornTick(ItemStack stack, EntityPlayer player) {
@@ -84,7 +83,7 @@ public abstract class ItemRelicBauble extends ItemBauble implements IRelic {
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack p_77613_1_) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return BotaniaAPI.rarityRelic;
 	}
 

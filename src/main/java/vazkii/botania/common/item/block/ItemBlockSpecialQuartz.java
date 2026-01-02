@@ -22,18 +22,19 @@ import java.util.List;
 
 public class ItemBlockSpecialQuartz extends ItemMultiTexture {
 
-	public ItemBlockSpecialQuartz(Block par1) {
-		super(par1, par1, new String[]{ "" });
+	public ItemBlockSpecialQuartz(Block block) {
+		super(block, block, new String[]{ "" });
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		return par1ItemStack.getItemDamage() >= 3 ? "" : ((BlockSpecialQuartz) field_150939_a).getNames()[par1ItemStack.getItemDamage()];
+	public String getUnlocalizedName(ItemStack stack) {
+        String[] names = ((BlockSpecialQuartz) field_150939_a).getNames();
+        return stack.getItemDamage() >= names.length ? names[names.length - 1] : names[stack.getItemDamage()];
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> infoList, boolean advanced) {
 		if (ConfigHandler.noMobSpawnOnBlocks)
-			list.add(StatCollector.translateToLocal("nomobspawnsonthisblock.tip"));
+			infoList.add(StatCollector.translateToLocal("nomobspawnsonthisblock.tip"));
 	}
 }

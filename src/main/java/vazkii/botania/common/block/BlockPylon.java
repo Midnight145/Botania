@@ -53,30 +53,30 @@ public class BlockPylon extends BlockModContainer<TilePylon> implements ILexicon
 	}
 
 	@Override
-	public Block setBlockName(String par1Str) {
-		GameRegistry.registerBlock(this, ItemBlockWithMetadataAndName.class, par1Str);
-		return super.setBlockName(par1Str);
+	public Block setBlockName(String name) {
+		GameRegistry.registerBlock(this, ItemBlockWithMetadataAndName.class, name);
+		return super.setBlockName(name);
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
+	public void registerBlockIcons(IIconRegister register) {
 		// NO-OP
 	}
 
 	@Override
-	public int damageDropped(int par1) {
-		return par1;
+	public int damageDropped(int meta) {
+		return meta;
 	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2, List par3) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < 3; i++)
-			par3.add(new ItemStack(par1, 1, i));
+			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public IIcon getIcon(int par1, int par2) {
-		return par2 == 0 ? Blocks.diamond_block.getIcon(0, 0) : ModBlocks.storage.getIcon(0, par2);
+	public IIcon getIcon(int side, int meta) {
+		return meta == 0 ? Blocks.diamond_block.getIcon(0, 0) : ModBlocks.storage.getIcon(0, meta);
 	}
 
 	@Override

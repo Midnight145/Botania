@@ -48,26 +48,26 @@ public class ItemManaTablet extends ItemMod implements IManaItem, ICreativeManaP
 	}
 
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 		// Empty tablet
-		par3List.add(new ItemStack(par1, 1));
+		list.add(new ItemStack(item, 1));
 
 		// Full tablet
-		ItemStack fullPower = new ItemStack(par1, 1);
+		ItemStack fullPower = new ItemStack(item, 1);
 		setMana(fullPower, MAX_MANA);
-		par3List.add(fullPower);
+		list.add(fullPower);
 
 		// Creative Tablet
-		ItemStack creative = new ItemStack(par1, 1);
+		ItemStack creative = new ItemStack(item, 1);
 		setMana(creative, MAX_MANA);
 		setStackCreative(creative);
-		par3List.add(creative);
+		list.add(creative);
 	}
 
 	@Override
-	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-		float mana = getMana(par1ItemStack);
-		return par2 == 1 ? Color.HSBtoRGB(0.528F,  mana / MAX_MANA, 1F) : 0xFFFFFF;
+	public int getColorFromItemStack(ItemStack stack, int renderPass) {
+		float mana = getMana(stack);
+		return renderPass == 1 ? Color.HSBtoRGB(0.528F,  mana / MAX_MANA, 1F) : 0xFFFFFF;
 	}
 
 	@Override
@@ -81,10 +81,10 @@ public class ItemManaTablet extends ItemMod implements IManaItem, ICreativeManaP
 	}
 
 	@Override
-	public void registerIcons(IIconRegister par1IconRegister) {
+	public void registerIcons(IIconRegister register) {
 		icons = new IIcon[2];
 		for(int i = 0; i < icons.length; i++)
-			icons[i] = IconHelper.forItem(par1IconRegister, this, i);
+			icons[i] = IconHelper.forItem(register, this, i);
 	}
 
 	@Override
@@ -93,9 +93,9 @@ public class ItemManaTablet extends ItemMod implements IManaItem, ICreativeManaP
 	}
 
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		if(isStackCreative(par1ItemStack))
-			par3List.add(StatCollector.translateToLocal("botaniamisc.creative"));
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> infoList, boolean advanced) {
+		if(isStackCreative(stack))
+			infoList.add(StatCollector.translateToLocal("botaniamisc.creative"));
 	}
 
 	@Override

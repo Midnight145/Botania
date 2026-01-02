@@ -62,8 +62,8 @@ public class EntityPoolMinecart extends EntityMinecart {
 	}
 
 	@Override
-	public void killMinecart(DamageSource p_94095_1_) {
-		super.killMinecart(p_94095_1_);
+	public void killMinecart(DamageSource source) {
+		super.killMinecart(source);
 		func_145778_a(Item.getItemFromBlock(ModBlocks.pool), 1, 0.0F);
 	}
 
@@ -136,15 +136,15 @@ public class EntityPoolMinecart extends EntityMinecart {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
-		super.writeEntityToNBT(p_70014_1_);
-		p_70014_1_.setInteger(TAG_MANA, getMana());
+	protected void writeEntityToNBT(NBTTagCompound tagCompound) {
+		super.writeEntityToNBT(tagCompound);
+		tagCompound.setInteger(TAG_MANA, getMana());
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
-		super.readEntityFromNBT(p_70037_1_);
-		setMana(p_70037_1_.getInteger(TAG_MANA));
+	protected void readEntityFromNBT(NBTTagCompound tagCompund) {
+		super.readEntityFromNBT(tagCompund);
+		setMana(tagCompund.getInteger(TAG_MANA));
 	}
 
 	public int getMana() {

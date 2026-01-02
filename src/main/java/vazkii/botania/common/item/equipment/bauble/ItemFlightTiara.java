@@ -89,8 +89,9 @@ public class ItemFlightTiara extends ItemBauble implements IManaUsingItem, IBaub
 
 	public ItemFlightTiara() {
 		super(LibItemNames.FLIGHT_TIARA);
-		MinecraftForge.EVENT_BUS.register(this);
-		FMLCommonHandler.instance().bus().register(this);
+		EventHandler handler = new EventHandler();
+		MinecraftForge.EVENT_BUS.register(handler);
+		FMLCommonHandler.instance().bus().register(handler);
 		setHasSubtypes(true);
 	}
 
@@ -101,23 +102,23 @@ public class ItemFlightTiara extends ItemBauble implements IManaUsingItem, IBaub
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
-		itemIcon = IconHelper.forItem(par1IconRegister, this, 0);
+	public void registerIcons(IIconRegister register) {
+		itemIcon = IconHelper.forItem(register, this, 0);
 		wingIcons = new IIcon[WING_TYPES];
 		for(int i = 0; i < WING_TYPES; i++)
-			wingIcons[i] = IconHelper.forItem(par1IconRegister, this, i + 1);
+			wingIcons[i] = IconHelper.forItem(register, this, i + 1);
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < SUBTYPES + 1; i++)
 			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public void addHiddenTooltip(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		super.addHiddenTooltip(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add(StatCollector.translateToLocal("botania.wings" + par1ItemStack.getItemDamage()));
+	public void addHiddenTooltip(ItemStack stack, EntityPlayer player, List<String> infoList, boolean adv) {
+		super.addHiddenTooltip(stack, player, infoList, adv);
+		infoList.add(StatCollector.translateToLocal("botania.wings" + stack.getItemDamage()));
 	}
 
 	@Override
@@ -164,9 +165,8 @@ public class ItemFlightTiara extends ItemBauble implements IManaUsingItem, IBaub
 	public void onWornTick(ItemStack stack, EntityLivingBase player) {
 		super.onWornTick(stack, player);
 
-		if(player instanceof EntityPlayer) {
-			EntityPlayer p = (EntityPlayer) player;
-			boolean flying = p.capabilities.isFlying;
+		if(player instanceof EntityPlayer p) {
+            boolean flying = p.capabilities.isFlying;
 
 			boolean wasSprting = ItemNBTHelper.getBoolean(stack, TAG_IS_SPRINTING, false);
 			boolean isSprinting = p.isSprinting();
@@ -218,11 +218,9 @@ public class ItemFlightTiara extends ItemBauble implements IManaUsingItem, IBaub
 		}
 	}
 
-	@SubscribeEvent
 	public void updatePlayerFlyStatus(LivingUpdateEvent event) {
-		if(event.entityLiving instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) event.entityLiving;
-			ItemStack tiara = PlayerHandler.getPlayerBaubles(player).getStackInSlot(0);
+		if(event.entityLiving instanceof EntityPlayer player) {
+            ItemStack tiara = PlayerHandler.getPlayerBaubles(player).getStackInSlot(0);
 			int left = ItemNBTHelper.getInt(tiara, TAG_TIME_LEFT, MAX_FLY_TIME);
 
 			if(playersWithFlight.contains(playerStr(player))) {
@@ -242,51 +240,51 @@ public class ItemFlightTiara extends ItemBauble implements IManaUsingItem, IBaub
 							float b = 1F;
 
 							switch(tiara.getItemDamage()) {
-							case 2 : {
-								r = 0.1F;
-								g = 0.1F;
-								b = 0.1F;
-								break;
-							}
-							case 3 : {
-								r = 0F;
-								g = 0.6F;
-								break;
-							}
-							case 4 : {
-								g = 0.3F;
-								b = 0.3F;
-								break;
-							}
-							case 5 : {
-								r = 0.6F;
-								g = 0F;
-								b = 0.6F;
-								break;
-							}
-							case 6 : {
-								r = 0.4F;
-								g = 0F;
-								b = 0F;
-								break;
-							}
-							case 7 : {
-								r = 0.2F;
-								g = 0.6F;
-								b = 0.2F;
-								break;
-							}
-							case 8 : {
-								r = 0.85F;
-								g = 0.85F;
-								b = 0F;
-								break;
-							}
-							case 9 : {
-								r = 0F;
-								b = 0F;
-								break;
-							}
+								case 2 : {
+									r = 0.1F;
+									g = 0.1F;
+									b = 0.1F;
+									break;
+								}
+								case 3 : {
+									r = 0F;
+									g = 0.6F;
+									break;
+								}
+								case 4 : {
+									g = 0.3F;
+									b = 0.3F;
+									break;
+								}
+								case 5 : {
+									r = 0.6F;
+									g = 0F;
+									b = 0.6F;
+									break;
+								}
+								case 6 : {
+									r = 0.4F;
+									g = 0F;
+									b = 0F;
+									break;
+								}
+								case 7 : {
+									r = 0.2F;
+									g = 0.6F;
+									b = 0.2F;
+									break;
+								}
+								case 8 : {
+									r = 0.85F;
+									g = 0.85F;
+									b = 0F;
+									break;
+								}
+								case 9 : {
+									r = 0F;
+									b = 0F;
+									break;
+								}
 							}
 
 							for(int i = 0; i < 2; i++)
@@ -308,7 +306,6 @@ public class ItemFlightTiara extends ItemBauble implements IManaUsingItem, IBaub
 		}
 	}
 
-	@SubscribeEvent
 	public void playerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
 		String username = event.player.getGameProfile().getName();
 		playersWithFlight.remove(username + ":false");
@@ -547,6 +544,19 @@ public class ItemFlightTiara extends ItemBauble implements IManaUsingItem, IBaub
 	@Override
 	public Achievement getAchievementOnCraft(ItemStack stack, EntityPlayer player, IInventory matrix) {
 		return stack.getItemDamage() == 1 ? ModAchievements.tiaraWings : null;
+	}
+
+	public class EventHandler {
+		@SubscribeEvent
+		public void updatePlayerFlyStatusWrapper(LivingUpdateEvent event) {
+			ItemFlightTiara.this.updatePlayerFlyStatus(event);
+		}
+
+		@SubscribeEvent
+		public void playerLoggedOutWrapper(PlayerEvent.PlayerLoggedOutEvent event) {
+			ItemFlightTiara.this.playerLoggedOut(event);
+		}
+
 	}
 
 }

@@ -45,7 +45,7 @@ public class BlockEnchantedSoil extends BlockMod implements ILexiconable {
 		setHardness(0.6F);
 		setStepSound(soundTypeGrass);
 		setBlockName(LibBlockNames.ENCHANTED_SOIL);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
 	@Override
@@ -55,11 +55,10 @@ public class BlockEnchantedSoil extends BlockMod implements ILexiconable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
+	public void registerBlockIcons(IIconRegister register) {
 		// NO-OP
 	}
 
-	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void loadTextures(TextureStitchEvent.Pre event) {
 		if(event.map.getTextureType() == 0) {
@@ -80,8 +79,8 @@ public class BlockEnchantedSoil extends BlockMod implements ILexiconable {
 	}
 
 	@Override
-	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-		return Blocks.dirt.getItemDropped(0, p_149650_2_, p_149650_3_);
+	public Item getItemDropped(int meta, Random random, int fortune) {
+		return Blocks.dirt.getItemDropped(0, random, fortune);
 	}
 
 	@Override
@@ -99,4 +98,11 @@ public class BlockEnchantedSoil extends BlockMod implements ILexiconable {
 		return LexiconData.overgrowthSeed;
 	}
 
+	public class EventHandler{
+		@SubscribeEvent
+		@SideOnly(Side.CLIENT)
+		public void loadTexturesWrapper(TextureStitchEvent.Pre event) {
+			BlockEnchantedSoil.this.loadTextures(event);
+		}
+	}
 }

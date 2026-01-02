@@ -53,14 +53,14 @@ public class BlockLivingwood extends BlockMod implements ILexiconable {
 	}
 
 	@Override
-	public int damageDropped(int par1) {
-		return par1;
+	public int damageDropped(int meta) {
+		return meta;
 	}
 
 	@Override
-	public Block setBlockName(String par1Str) {
-		register(par1Str);
-		return super.setBlockName(par1Str);
+	public Block setBlockName(String name) {
+		register(name);
+		return super.setBlockName(name);
 	}
 
 	void register(String name) {
@@ -68,21 +68,21 @@ public class BlockLivingwood extends BlockMod implements ILexiconable {
 	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < TYPES; i++)
-			par3List.add(new ItemStack(par1, 1, i));
+			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
+	public void registerBlockIcons(IIconRegister register) {
 		icons = new IIcon[TYPES];
 		for(int i = 0; i < TYPES; i++)
-			icons[i] = IconHelper.forBlock(par1IconRegister, this, i);
+			icons[i] = IconHelper.forBlock(register, this, i);
 	}
 
 	@Override
-	public IIcon getIcon(int par1, int par2) {
-		return icons[Math.min(TYPES - 1, par2)];
+	public IIcon getIcon(int side, int meta) {
+		return icons[Math.min(TYPES - 1, meta)];
 	}
 
 	@Override

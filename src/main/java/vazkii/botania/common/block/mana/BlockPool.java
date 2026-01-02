@@ -74,14 +74,14 @@ public class BlockPool extends BlockModContainer<TilePool> implements IWandHUD, 
 	}
 
 	@Override
-	public Block setBlockName(String par1Str) {
-		GameRegistry.registerBlock(this, ItemBlockPool.class, par1Str);
-		return super.setBlockName(par1Str);
+	public Block setBlockName(String name) {
+		GameRegistry.registerBlock(this, ItemBlockPool.class, name);
+		return super.setBlockName(name);
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		manaIcon = IconHelper.forName(par1IconRegister, "manaWater");
+	public void registerBlockIcons(IIconRegister register) {
+		manaIcon = IconHelper.forName(register, "manaWater");
 	}
 
 	@Override
@@ -90,12 +90,12 @@ public class BlockPool extends BlockModContainer<TilePool> implements IWandHUD, 
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
-		TilePool pool = (TilePool) par1World.getTileEntity(par2, par3, par4);
+	public void breakBlock(World world, int x, int y, int z, Block blockBroken, int meta) {
+		TilePool pool = (TilePool) world.getTileEntity(x, y, z);
 		if (pool != null) {
 			lastFragile = pool.fragile;
 		}
-		super.breakBlock(par1World, par2, par3, par4, par5, par6);
+		super.breakBlock(world, x, y, z, blockBroken, meta);
 	}
 
 	@Override
@@ -109,11 +109,11 @@ public class BlockPool extends BlockModContainer<TilePool> implements IWandHUD, 
 	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2, List par3) {
-		par3.add(new ItemStack(par1, 1, 0));
-		par3.add(new ItemStack(par1, 1, 2));
-		par3.add(new ItemStack(par1, 1, 3));
-		par3.add(new ItemStack(par1, 1, 1));
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+		list.add(new ItemStack(item, 1, 0));
+		list.add(new ItemStack(item, 1, 2));
+		list.add(new ItemStack(item, 1, 3));
+		list.add(new ItemStack(item, 1, 1));
 	}
 
 	@Override
@@ -122,27 +122,27 @@ public class BlockPool extends BlockModContainer<TilePool> implements IWandHUD, 
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {
-		if(par5Entity instanceof EntityItem) {
-			TilePool tile = (TilePool) par1World.getTileEntity(par2, par3, par4);
-			if(tile.collideEntityItem((EntityItem) par5Entity))
-				VanillaPacketDispatcher.dispatchTEToNearbyPlayers(par1World, par2, par3, par4);
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity collider) {
+		if(collider instanceof EntityItem) {
+			TilePool tile = (TilePool) world.getTileEntity(x, y, z);
+			if(tile.collideEntityItem((EntityItem) collider))
+				VanillaPacketDispatcher.dispatchTEToNearbyPlayers(world, x, y, z);
 		}
 	}
 
 	@Override
-	public void addCollisionBoxesToList(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_) {
+	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider) {
 		float f = 1F / 16F;
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f, 1.0F);
-		super.addCollisionBoxesToList(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
+		super.addCollisionBoxesToList(world, x, y, z, mask, list, collider);
 		setBlockBounds(0.0F, 0.0F, 0.0F, f, 0.5F, 1.0F);
-		super.addCollisionBoxesToList(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
+		super.addCollisionBoxesToList(world, x, y, z, mask, list, collider);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, f);
-		super.addCollisionBoxesToList(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
+		super.addCollisionBoxesToList(world, x, y, z, mask, list, collider);
 		setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-		super.addCollisionBoxesToList(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
+		super.addCollisionBoxesToList(world, x, y, z, mask, list, collider);
 		setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 0.5F, 1.0F);
-		super.addCollisionBoxesToList(p_149743_1_, p_149743_2_, p_149743_3_, p_149743_4_, p_149743_5_, p_149743_6_, p_149743_7_);
+		super.addCollisionBoxesToList(world, x, y, z, mask, list, collider);
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 	}
 
@@ -162,8 +162,8 @@ public class BlockPool extends BlockModContainer<TilePool> implements IWandHUD, 
 	}
 
 	@Override
-	public IIcon getIcon(int par1, int par2) {
-		return ModBlocks.livingrock.getIcon(par1, 0);
+	public IIcon getIcon(int side, int meta) {
+		return ModBlocks.livingrock.getIcon(side, 0);
 	}
 
 	@Override
@@ -177,8 +177,8 @@ public class BlockPool extends BlockModContainer<TilePool> implements IWandHUD, 
 	}
 
 	@Override
-	public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5) {
-		TilePool pool = (TilePool) par1World.getTileEntity(par2, par3, par4);
+	public int getComparatorInputOverride(World world, int x, int y, int z, int side) {
+		TilePool pool = (TilePool) world.getTileEntity(x, y, z);
 		int val = (int) ((double) pool.getCurrentMana() / (double) pool.manaCap * 15.0);
 		if(pool.getCurrentMana() > 0)
 			val = Math.max(val, 1);

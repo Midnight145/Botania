@@ -81,27 +81,24 @@ public class ItemLokiRing extends ItemRelicBauble implements IExtendedWireframeC
 
 	public ItemLokiRing() {
 		super(LibItemNames.LOKI_RING);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
-	@SubscribeEvent
 	public void onBlockBreak(BlockEvent.BreakEvent event) {
-        EntityPlayer player = event.getPlayer();
-        int x = event.x;
-        int y = event.y;
-        int z = event.z;
-        int side = event.blockMetadata;
-        ItemStack stack = player.getCurrentEquippedItem();
+		EntityPlayer player = event.getPlayer();
+		int x = event.x;
+		int y = event.y;
+		int z = event.z;
+		int side = event.blockMetadata;
+		ItemStack stack = player.getCurrentEquippedItem();
 		if(stack == null) return;
-        Item item = player.getCurrentEquippedItem().getItem();
-        breakOnAllCursors(player, item, stack, x, y, z, side);   
-    }
-	
+		Item item = player.getCurrentEquippedItem().getItem();
+		breakOnAllCursors(player, item, stack, x, y, z, side);
+	}
 
-	@SubscribeEvent
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if(recursion) return;
-		
+
 		EntityPlayer player = event.entityPlayer;
 		ItemStack lokiRing = getLokiRing(player);
 		if (lokiRing == null || player.worldObj.isRemote)
@@ -127,23 +124,23 @@ public class ItemLokiRing extends ItemRelicBauble implements IExtendedWireframeC
 						syncLokiRing(player);
 				} else {
 					addCursor : {
-					int relX = lookPos.blockX - originCoords.posX;
-					int relY = lookPos.blockY - originCoords.posY;
-					int relZ = lookPos.blockZ - originCoords.posZ;
+						int relX = lookPos.blockX - originCoords.posX;
+						int relY = lookPos.blockY - originCoords.posY;
+						int relZ = lookPos.blockZ - originCoords.posZ;
 
-					for(LokiCursor cursor : cursors)
-						if(cursor.getX() == relX && cursor.getY() == relY && cursor.getZ() == relZ) {
-							cursors.remove(cursor);
-							setCursorList(lokiRing, cursors);
-							if(player instanceof EntityPlayerMP)
-								syncLokiRing(player);
-							break addCursor;
-						}
+						for(LokiCursor cursor : cursors)
+							if(cursor.getX() == relX && cursor.getY() == relY && cursor.getZ() == relZ) {
+								cursors.remove(cursor);
+								setCursorList(lokiRing, cursors);
+								if(player instanceof EntityPlayerMP)
+									syncLokiRing(player);
+								break addCursor;
+							}
 
-					addCursor(lokiRing, relX, relY, relZ, getRingMirrorMode(lokiRing) );
-					if(player instanceof EntityPlayerMP)
-						syncLokiRing(player);
-				}
+						addCursor(lokiRing, relX, relY, relZ, getRingMirrorMode(lokiRing) );
+						if(player instanceof EntityPlayerMP)
+							syncLokiRing(player);
+					}
 				}
 			}
 		} else if (heldItemStack != null && event.action == Action.RIGHT_CLICK_BLOCK && lookPos != null && isRingEnabled(lokiRing)) {
@@ -435,18 +432,18 @@ public class ItemLokiRing extends ItemRelicBauble implements IExtendedWireframeC
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean adv) {
-		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiDescription"), list);
-		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiDescription2"), list);
-		addStringToTooltip("", list);
-		addStringToTooltip(EnumChatFormatting.WHITE +StatCollector.translateToLocal("botaniamisc.lokiCurrent"), list);
-		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiState") + ": " + getOnOffString(isRingEnabled(stack)), list);
-		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.breaking") + ": " + getOnOffString(isRingBreakingEnabled(stack)), list);
-		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiMirror") + getAxisString(getRingMirrorMode(stack)), list);
-		addStringToTooltip("", list);
-		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiToggleDescription") + " " + getOnOffString(true) + EnumChatFormatting.RESET + "/"+ getOnOffString(false), list);
-		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiBreakingDescription") + " " + getOnOffString(true) + EnumChatFormatting.RESET+"/" + getOnOffString(false), list);	
-		super.addInformation(stack, player, list, adv);
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> infoList, boolean advanced) {
+		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiDescription"), infoList);
+		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiDescription2"), infoList);
+		addStringToTooltip("", infoList);
+		addStringToTooltip(EnumChatFormatting.WHITE +StatCollector.translateToLocal("botaniamisc.lokiCurrent"), infoList);
+		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiState") + ": " + getOnOffString(isRingEnabled(stack)), infoList);
+		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.breaking") + ": " + getOnOffString(isRingBreakingEnabled(stack)), infoList);
+		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiMirror") + getAxisString(getRingMirrorMode(stack)), infoList);
+		addStringToTooltip("", infoList);
+		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiToggleDescription") + " " + getOnOffString(true) + EnumChatFormatting.RESET + "/"+ getOnOffString(false), infoList);
+		addStringToTooltip(StatCollector.translateToLocal("botaniamisc.lokiBreakingDescription") + " " + getOnOffString(true) + EnumChatFormatting.RESET+"/" + getOnOffString(false), infoList);
+		super.addInformation(stack, player, infoList, advanced);
 	}
 
 	@Override
@@ -688,6 +685,17 @@ public class ItemLokiRing extends ItemRelicBauble implements IExtendedWireframeC
 		}
 	}
 
+	public class EventHandler{
+		@SubscribeEvent
+		public void onBlockBreakWrapper(BlockEvent.BreakEvent event) {
+			ItemLokiRing.this.onBlockBreak(event);
+		}
+
+		@SubscribeEvent
+		public void onPlayerInteractWrapper(PlayerInteractEvent event) {
+			ItemLokiRing.this.onPlayerInteract(event);
+		}
+	}
 
 }
 

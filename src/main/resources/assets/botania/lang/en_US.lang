@@ -199,7 +199,7 @@ botania.nei.quickInfo:item.bone~0=You're gonna have a bad time
 botania.nei.quickInfo:item.lexicon~0=What exactly did you expect?
 botania.nei.quickInfo:item.terrasteel~4=You can get Terrasteel by tossing the right materials on a Terrestrial Agglomeration Plate
 botania.nei.quickInfo:item.enderAirBottle~15=You can get this by right clicking with a Glass Bottle while in the End
-primus
+
 # BUILDCRAFT INTEGRATION
 botania.triggers.manaDetector=Mana Burst
 botania.triggers.manaEmpty=Mana Empty
@@ -484,7 +484,7 @@ entity.Botania.botania:fallingStar.name=Falling Star
 achievement.botania:flowerPickup=Sky of Beginning
 achievement.botania:flowerPickup.desc=Pick up a Mystical Flower from the world
 achievement.botania:lexiconUse=A Realistical Logical Ideologist
-achievement.botania:lexiconUse.desc=Open a Lexica Botania and have a look through the _index
+achievement.botania:lexiconUse.desc=Open a Lexica Botania and have a look through the index
 achievement.botania:daybloomPickup=Daybreak Arrival
 achievement.botania:daybloomPickup.desc=Make a Daybloom in a Petal Apothecary
 achievement.botania:manaPoolPickup=Vivid Wave
@@ -650,6 +650,7 @@ tile.botania:flower12.name=Mystical Brown Flower
 tile.botania:flower13.name=Mystical Green Flower
 tile.botania:flower14.name=Mystical Red Flower
 tile.botania:flower15.name=Mystical Black Flower
+tile.botania:flower_structurelib.name=Any Botania Flower
 tile.botania:altar0.name=Petal Apothecary
 tile.botania:altar1.name=Forest Petal Apothecary
 tile.botania:altar2.name=Plains Petal Apothecary
@@ -3026,8 +3027,8 @@ botania.page.thermalily1=&o0108 Style&r.
 # -- ROSA ARCANA
 botania.entry.arcanerose=Rosa Arcana
 botania.tagline.arcanerose=Mana from experience
-botania.page.arcanerose0=&4Experience Points&0 are a form of magic of sorts. The &1Rosa Arcana&0 can tap into it and absorb the experience of players on the ground around it, turning it into &1Mana&0.<br>What the flower can not do, however, is absorb raw experience orbs from the floor. They must first be gathered by a player.
-botania.page.arcanerose1=&oWhen this card is Summoned, toss a coin&r.
+botania.page.arcanerose0=&4Experience Points&0 contain a magic of their own. The &1Rosa Arcana&0 can tap into this magic, absorbing the experience of nearby players and turning it into &4Mana&0.<br>It can also synthesize mana from experience orbs and enchanted items in the world.
+botania.page.arcanerose1=&oWhen this flower is planted, toss a coin&r.
 
 # -- MUNCHDEW
 botania.entry.munchdew=Munchdew

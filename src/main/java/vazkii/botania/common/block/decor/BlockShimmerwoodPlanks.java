@@ -35,10 +35,9 @@ public class BlockShimmerwoodPlanks  extends BlockMod implements ILexiconable {
 		setHardness(2.0F);
 		setStepSound(soundTypeWood);
 		setBlockName(LibBlockNames.SHIMMERWOOD_PLANKS);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
-	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void loadTextures(TextureStitchEvent.Pre event) {
 		if(event.map.getTextureType() == 0) {
@@ -50,7 +49,7 @@ public class BlockShimmerwoodPlanks  extends BlockMod implements ILexiconable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
+	public void registerBlockIcons(IIconRegister register) {
 		// NO-OP
 	}
 
@@ -59,4 +58,11 @@ public class BlockShimmerwoodPlanks  extends BlockMod implements ILexiconable {
 		return LexiconData.rainbowRod;
 	}
 
+	public class EventHandler {
+		@SubscribeEvent
+		@SideOnly(Side.CLIENT)
+		public void loadTexturesWrapper(TextureStitchEvent.Pre event) {
+			BlockShimmerwoodPlanks.this.loadTextures(event);
+		}
+	}
 }

@@ -49,10 +49,9 @@ public class ItemAesirRing extends ItemRelicBauble implements IExtendedWireframe
 		super(LibItemNames.AESIR_RING);
 		GameRegistry.addRecipe(new AesirRingRecipe());
 		RecipeSorter.register("botania:aesirRing", AesirRingRecipe.class, Category.SHAPELESS, "");
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
-	@SubscribeEvent
 	public void onDropped(ItemTossEvent event) {
 		if(event.entityItem != null && event.entityItem.getEntityItem() != null && !event.entityItem.worldObj.isRemote) {
 			ItemStack stack = event.entityItem.getEntityItem();
@@ -119,4 +118,10 @@ public class ItemAesirRing extends ItemRelicBauble implements IExtendedWireframe
 		return ModAchievements.relicAesirRing;
 	}
 
+	public class EventHandler {
+		@SubscribeEvent
+		public void onDroppedWrapper(ItemTossEvent event) {
+			ItemAesirRing.this.onDropped(event);
+		}
+	}
 }

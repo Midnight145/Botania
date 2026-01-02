@@ -60,8 +60,9 @@ public class BlockPistonRelay extends BlockMod implements IWandable, ILexiconabl
 		setResistance(10F);
 		setStepSound(soundTypeMetal);
 
-		MinecraftForge.EVENT_BUS.register(this);
-		FMLCommonHandler.instance().bus().register(this);
+		EventHandler handler = new EventHandler();
+		MinecraftForge.EVENT_BUS.register(handler);
+		FMLCommonHandler.instance().bus().register(handler);
 	}
 
 	@Override
@@ -75,8 +76,8 @@ public class BlockPistonRelay extends BlockMod implements IWandable, ILexiconabl
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6) {
-		mapCoords(par1World.provider.dimensionId, par2, par3, par4, 2);
+	public void breakBlock(World world, int x, int y, int z, Block blockBroken, int meta) {
+		mapCoords(world.provider.dimensionId, x, y, z, 2);
 	}
 
 	public static String getCoordsAsString(int world, int x, int y, int z) {
@@ -140,12 +141,10 @@ public class BlockPistonRelay extends BlockMod implements IWandable, ILexiconabl
 		return true;
 	}
 
-	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
 		WorldData.get(event.world);
 	}
 
-	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event) {
 		WorldData.get(event.world).markDirty();
 	}
@@ -194,7 +193,6 @@ public class BlockPistonRelay extends BlockMod implements IWandable, ILexiconabl
 		}
 	}
 
-	@SubscribeEvent
 	public void tickEnd(TickEvent event) {
 		if(event.type == Type.SERVER && event.phase == Phase.END) {
 			List<String> coordsToCheckCopy = new ArrayList<>(coordsToCheck.keySet());
@@ -277,5 +275,22 @@ public class BlockPistonRelay extends BlockMod implements IWandable, ILexiconabl
 	@Override
 	public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {
 		return LexiconData.pistonRelay;
+	}
+
+	public class EventHandler {
+		@SubscribeEvent
+		public void onWorldLoadWrapper(WorldEvent.Load event) {
+			BlockPistonRelay.this.onWorldLoad(event);
+		}
+
+		@SubscribeEvent
+		public void onWorldUnloadWrapper(WorldEvent.Unload event) {
+			BlockPistonRelay.this.onWorldUnload(event);
+		}
+
+		@SubscribeEvent
+		public void tickEndWrapper(TickEvent event) {
+			BlockPistonRelay.this.tickEnd(event);
+		}
 	}
 }

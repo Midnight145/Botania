@@ -40,17 +40,17 @@ public class ItemRelic extends ItemMod implements IRelic {
 	}
 
 	@Override
-	public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
-		if(p_77663_3_ instanceof EntityPlayer)
-			updateRelic(p_77663_1_, (EntityPlayer) p_77663_3_);
+	public void onUpdate(ItemStack stack, World world, Entity entity, int invSlot, boolean isHeld) {
+		if(entity instanceof EntityPlayer)
+			updateRelic(stack, (EntityPlayer) entity);
 	}
 
 	@Override
-	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
-		addBindInfo(p_77624_3_, p_77624_1_, p_77624_2_);
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> infoList, boolean advanced) {
+		addBindInfo(infoList, stack, player);
 	}
 
-	public static void addBindInfo(List list, ItemStack stack, EntityPlayer player) {
+	public static void addBindInfo(List<String> list, ItemStack stack, EntityPlayer player) {
 		if(GuiScreen.isShiftKeyDown()) {
 			String bind = getSoulbindUsernameS(stack);
 			if(bind.isEmpty())
@@ -146,7 +146,7 @@ public class ItemRelic extends ItemMod implements IRelic {
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack p_77613_1_) {
+	public EnumRarity getRarity(ItemStack stack) {
 		return BotaniaAPI.rarityRelic;
 	}
 

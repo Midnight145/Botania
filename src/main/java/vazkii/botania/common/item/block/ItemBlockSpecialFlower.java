@@ -56,9 +56,8 @@ public class ItemBlockSpecialFlower extends ItemBlockMod implements IRecipeKeyPr
 		if(placed) {
 			String type = getType(stack);
 			TileEntity te = world.getTileEntity(x, y, z);
-			if(te instanceof TileSpecialFlower) {
-				TileSpecialFlower tile = (TileSpecialFlower) te;
-				tile.setSubTile(type);
+			if(te instanceof TileSpecialFlower tile) {
+                tile.setSubTile(type);
 				tile.onBlockAdded(world, x, y, z);
 				tile.onBlockPlacedBy(world, x, y, z, player, stack);
 				if(!world.isRemote)
@@ -75,27 +74,27 @@ public class ItemBlockSpecialFlower extends ItemBlockMod implements IRecipeKeyPr
 	}
 
 	@Override
-	public String getUnlocalizedNameInefficiently(ItemStack par1ItemStack) {
-		return getUnlocalizedNameInefficiently_(par1ItemStack);
+	public String getUnlocalizedNameInefficiently(ItemStack stack) {
+		return getUnlocalizedNameInefficiently_(stack);
 	}
 
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		String type = getType(par1ItemStack);
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> infoList, boolean advanced) {
+		String type = getType(stack);
 		SubTileSignature sig = BotaniaAPI.getSignatureForName(type);
 
-		sig.addTooltip(par1ItemStack, par2EntityPlayer, par3List);
+		sig.addTooltip(stack, player, infoList);
 
 		if(ConfigHandler.referencesEnabled) {
-			String refUnlocalized = sig.getUnlocalizedLoreTextForStack(par1ItemStack);
+			String refUnlocalized = sig.getUnlocalizedLoreTextForStack(stack);
 			String refLocalized = StatCollector.translateToLocal(refUnlocalized);
 			if(!refLocalized.equals(refUnlocalized))
-				par3List.add(EnumChatFormatting.ITALIC + refLocalized);
+				infoList.add(EnumChatFormatting.ITALIC + refLocalized);
 		}
 
 		String mod = BotaniaAPI.subTileMods.get(type);
 		if(!mod.equals(LibMisc.MOD_ID))
-			par3List.add(EnumChatFormatting.ITALIC + "[" + mod + "]");
+			infoList.add(EnumChatFormatting.ITALIC + "[" + mod + "]");
 	}
 
 	public static String getType(ItemStack stack) {

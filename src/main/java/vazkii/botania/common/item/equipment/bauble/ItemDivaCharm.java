@@ -46,14 +46,12 @@ public class ItemDivaCharm extends ItemBauble implements IManaUsingItem, IBauble
 
 	public ItemDivaCharm() {
 		super(LibItemNames.DIVA_CHARM);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
-	@SubscribeEvent
 	public void onEntityDamaged(LivingHurtEvent event) {
-		if(event.source.getEntity() instanceof EntityPlayer && event.entityLiving instanceof EntityLiving && !event.entityLiving.worldObj.isRemote && Math.random() < 0.6F) {
-			EntityPlayer player = (EntityPlayer) event.source.getEntity();
-			ItemStack amulet = PlayerHandler.getPlayerBaubles(player).getStackInSlot(0);
+		if(event.source.getEntity() instanceof EntityPlayer player && event.entityLiving instanceof EntityLiving && !event.entityLiving.worldObj.isRemote && Math.random() < 0.6F) {
+            ItemStack amulet = PlayerHandler.getPlayerBaubles(player).getStackInSlot(0);
 			if(amulet != null && amulet.getItem() == this) {
 				final int cost = 250;
 				if(ManaItemHandler.requestManaExact(amulet, player, cost, false)) {
@@ -113,4 +111,10 @@ public class ItemDivaCharm extends ItemBauble implements IManaUsingItem, IBauble
 		}
 	}
 
+	public class EventHandler {
+		@SubscribeEvent
+		public void onEntityDamaged(LivingHurtEvent event) {
+			ItemDivaCharm.this.onEntityDamaged(event);
+		}
+	}
 }

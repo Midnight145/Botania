@@ -49,7 +49,7 @@ public class BlockPrismarine extends BlockMod implements ILexiconable {
 		setResistance(10.0F);
 		setStepSound(soundTypeStone);
 		setBlockName(LibBlockNames.PRISMARINE);
-		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
 	@Override
@@ -58,31 +58,30 @@ public class BlockPrismarine extends BlockMod implements ILexiconable {
 	}
 
 	@Override
-	public int damageDropped(int par1) {
-		return par1;
+	public int damageDropped(int meta) {
+		return meta;
 	}
 
 	@Override
-	public Block setBlockName(String par1Str) {
-		GameRegistry.registerBlock(this, ItemCubeWithMetadataAndName.class, par1Str);
-		return super.setBlockName(par1Str);
+	public Block setBlockName(String name) {
+		GameRegistry.registerBlock(this, ItemCubeWithMetadataAndName.class, name);
+		return super.setBlockName(name);
 	}
 
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(int i = 0; i < TYPES; i++)
-			par3List.add(new ItemStack(par1, 1, i));
+			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
+	public void registerBlockIcons(IIconRegister register) {
 		icons = new IIcon[TYPES];
 		for(int i = 1; i < TYPES; i++)
-			icons[i] = IconHelper.forBlock(par1IconRegister, this, i);
+			icons[i] = IconHelper.forBlock(register, this, i);
 	}
 
-	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void loadTextures(TextureStitchEvent.Pre event) {
 		if(event.map.getTextureType() == 0) {
@@ -93,8 +92,8 @@ public class BlockPrismarine extends BlockMod implements ILexiconable {
 	}
 
 	@Override
-	public IIcon getIcon(int par1, int par2) {
-		return icons[Math.min(TYPES - 1, par2)];
+	public IIcon getIcon(int side, int meta) {
+		return icons[Math.min(TYPES - 1, meta)];
 	}
 
 	@Override
@@ -106,5 +105,13 @@ public class BlockPrismarine extends BlockMod implements ILexiconable {
 	@Override
 	public LexiconEntry getEntry(World world, int x, int y, int z, EntityPlayer player, ItemStack lexicon) {
 		return LexiconData.prismarine;
+	}
+
+	public class EventHandler {
+		@SubscribeEvent
+		@SideOnly(Side.CLIENT)
+		public void loadTexturesWrapper(TextureStitchEvent.Pre event) {
+			BlockPrismarine.this.loadTextures(event);
+		}
 	}
 }

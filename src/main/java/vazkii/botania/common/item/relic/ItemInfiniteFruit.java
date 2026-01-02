@@ -34,20 +34,20 @@ public class ItemInfiniteFruit extends ItemRelic {
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack p_77626_1_) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 32;
 	}
 
 	@Override
-	public EnumAction getItemUseAction(ItemStack p_77661_1_) {
-		return isBoot(p_77661_1_) ? EnumAction.drink : EnumAction.eat;
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return isBoot(stack) ? EnumAction.drink : EnumAction.eat;
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-		if(p_77659_3_.canEat(false) && isRightPlayer(p_77659_3_, p_77659_1_))
-			p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
-		return p_77659_1_;
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+		if(player.canEat(false) && isRightPlayer(player, stack))
+			player.setItemInUse(stack, getMaxItemUseDuration(stack));
+		return stack;
 	}
 
 	@Override
@@ -64,18 +64,18 @@ public class ItemInfiniteFruit extends ItemRelic {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
-		itemIcon = IconHelper.forItem(par1IconRegister, this);
-		dasBootIcon = IconHelper.forName(par1IconRegister, "dasBoot");
+	public void registerIcons(IIconRegister register) {
+		itemIcon = IconHelper.forItem(register, this);
+		dasBootIcon = IconHelper.forName(register, "dasBoot");
 	}
 
 	@Override
-	public IIcon getIconIndex(ItemStack par1ItemStack) {
-		return isBoot(par1ItemStack) ? dasBootIcon : super.getIconIndex(par1ItemStack);
+	public IIcon getIconIndex(ItemStack stack) {
+		return isBoot(stack) ? dasBootIcon : super.getIconIndex(stack);
 	}
 
-	private boolean isBoot(ItemStack par1ItemStack) {
-		String name = par1ItemStack.getDisplayName().toLowerCase().trim();
+	private boolean isBoot(ItemStack stack) {
+		String name = stack.getDisplayName().toLowerCase().trim();
 		return name.equals("das boot");
 	}
 }

@@ -35,33 +35,33 @@ public class ItemTemperanceStone extends ItemMod {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-		int dmg = par1ItemStack.getItemDamage();
-		par1ItemStack.setItemDamage(~dmg & 1);
-		par2World.playSoundAtEntity(par3EntityPlayer, "random.orb", 0.3F, 0.1F);
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+		int dmg = stack.getItemDamage();
+		stack.setItemDamage(~dmg & 1);
+		world.playSoundAtEntity(player, "random.orb", 0.3F, 0.1F);
 
-		return par1ItemStack;
+		return stack;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
-		itemIcon = IconHelper.forItem(par1IconRegister, this, 0);
-		enabledIcon = IconHelper.forItem(par1IconRegister, this, 1);
+	public void registerIcons(IIconRegister register) {
+		itemIcon = IconHelper.forItem(register, this, 0);
+		enabledIcon = IconHelper.forItem(register, this, 1);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int par1) {
-		return par1 == 1 ? enabledIcon : itemIcon;
+	public IIcon getIconFromDamage(int meta) {
+		return meta == 1 ? enabledIcon : itemIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		if(par1ItemStack.getItemDamage() == 1)
-			addStringToTooltip(StatCollector.translateToLocal("botaniamisc.active"), par3List);
-		else addStringToTooltip(StatCollector.translateToLocal("botaniamisc.inactive"), par3List);
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> infoList, boolean advanced) {
+		if(stack.getItemDamage() == 1)
+			addStringToTooltip(StatCollector.translateToLocal("botaniamisc.active"), infoList);
+		else addStringToTooltip(StatCollector.translateToLocal("botaniamisc.inactive"), infoList);
 	}
 
 	void addStringToTooltip(String s, List<String> tooltip) {

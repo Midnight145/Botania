@@ -63,19 +63,19 @@ public abstract class ItemBrewBase extends ItemMod implements IBrewItem, IPickup
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack p_77626_1_) {
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return drinkSpeed;
 	}
 
 	@Override
-	public EnumAction getItemUseAction(ItemStack p_77661_1_) {
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.drink;
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-		p_77659_3_.setItemInUse(p_77659_1_, getMaxItemUseDuration(p_77659_1_));
-		return p_77659_1_;
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+		player.setItemInUse(stack, getMaxItemUseDuration(stack));
+		return stack;
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public abstract class ItemBrewBase extends ItemMod implements IBrewItem, IPickup
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 		for(String s : BotaniaAPI.brewMap.keySet()) {
 			ItemStack stack = new ItemStack(item);
 			setBrew(stack, s);
@@ -119,12 +119,12 @@ public abstract class ItemBrewBase extends ItemMod implements IBrewItem, IPickup
 	}
 
 	@Override
-	public void registerIcons(IIconRegister par1IconRegister) {
-		itemIcon = IconHelper.forName(par1IconRegister, texName + "0");
+	public void registerIcons(IIconRegister register) {
+		itemIcon = IconHelper.forName(register, texName + "0");
 
 		icons = new IIcon[swigs];
 		for(int i = 0; i < swigs; i++)
-			icons[i] = IconHelper.forName(par1IconRegister, texName + "1_" + i);
+			icons[i] = IconHelper.forName(register, texName + "1_" + i);
 	}
 
 	@Override
@@ -138,8 +138,8 @@ public abstract class ItemBrewBase extends ItemMod implements IBrewItem, IPickup
 	}
 
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int pass) {
-		if(pass == 0)
+	public int getColorFromItemStack(ItemStack stack, int renderPass) {
+		if(renderPass == 0)
 			return 0xFFFFFF;
 
 		Color color = new Color(getBrew(stack).getColor(stack));
@@ -158,12 +158,12 @@ public abstract class ItemBrewBase extends ItemMod implements IBrewItem, IPickup
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean adv) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> infoList, boolean advanced) {
 		Brew brew = getBrew(stack);
 		for(PotionEffect effect : brew.getPotionEffects(stack)) {
 			Potion potion = Potion.potionTypes[effect.getPotionID()];
 			EnumChatFormatting format = potion.isBadEffect() ? EnumChatFormatting.RED : EnumChatFormatting.GRAY;
-			list.add(format + StatCollector.translateToLocal(effect.getEffectName()) + (effect.getAmplifier() == 0 ? "" : " " + StatCollector.translateToLocal("botania.roman" + (effect.getAmplifier() + 1))) + EnumChatFormatting.GRAY + (potion.isInstant() ? "" : " (" + Potion.getDurationString(effect) + ")"));
+			infoList.add(format + StatCollector.translateToLocal(effect.getEffectName()) + (effect.getAmplifier() == 0 ? "" : " " + StatCollector.translateToLocal("botania.roman" + (effect.getAmplifier() + 1))) + EnumChatFormatting.GRAY + (potion.isInstant() ? "" : " (" + Potion.getDurationString(effect) + ")"));
 		}
 	}
 
